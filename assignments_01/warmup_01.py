@@ -116,8 +116,8 @@ plt.show()
 x1, y1 = [1, 2, 3, 4, 5], [2, 4, 5, 4, 5]
 x2, y2 = [1, 2, 3, 4, 5], [5, 4, 3, 2, 1]
 
-plt.scatter(x1, y1, colorizer='blue')
-plt.scatter(x2, y2, colorizer='red')
+plt.scatter(x1, y1, color='blue')
+plt.scatter(x2, y2, color='red')
 plt.xlabel('Xs')
 plt.ylabel('Ys')
 plt.legend(['x1 & y1', 'x2 & y2'])
@@ -168,7 +168,7 @@ plt.show()
 group_a = [55, 60, 63, 70, 68, 62, 58, 65]
 group_b = [75, 80, 78, 90, 85, 79, 82, 88]
 
-plt.boxplot([group_a, group_b], tick_labels=['Group A', 'Group B'])
+plt.boxplot([group_a, group_b], labels=['Group A', 'Group B'])
 plt.title('Score Comparison')
 plt.show()
 

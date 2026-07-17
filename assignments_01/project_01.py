@@ -9,15 +9,17 @@ from prefect.logging import get_run_logger
 from scipy.stats import ttest_ind, pearsonr
 
 
-# Task 1: Load Multiple Years Of Data
-@task(retries=3, retry_delay_seconds=2)
-def load_multiple_years_of_data(numeric_columns: list, db_path: str):
-    logger = get_run_logger()
-    # Create list of urls for datasets
+def get_urls():
     url_prefix = 'https://raw.githubusercontent.com/Code-the-Dream-School/python-200-v1/refs/heads/main/assignments/resources/happiness_project/world_happiness_20'
     years_list = [15,25]
-    urls = [f'{url_prefix}{year}.csv' for year in range(years_list[0], years_list[1])]
+    return [f'{url_prefix}{year}.csv' for year in range(years_list[0], years_list[1])]
 
+# Task 1: Load Multiple Years Of Data
+@task(retries=3, retry_delay_seconds=2)
+def load_multiple_years_of_data(urls: list, numeric_columns: list, db_path: str):
+    logger = get_run_logger()
+
+    # Add each csv from the previous urls to create one dataset
     df_happiness = pd.DataFrame()
     num_columns = numeric_columns.copy()
     num_columns.append('ladder_score')
@@ -54,11 +56,11 @@ def descriptive_stats(df: pd.DataFrame) -> pd.DataFrame:
     happiness_mean = df['happiness_score'].mean()
     happiness_median = df['happiness_score'].median()
     happiness_std = df['happiness_score'].std()
-    logger.info(f'Happiness Score Mean: {happiness_mean}')
-    logger.info(f'Happiness Score Median: {happiness_median}')
-    logger.info(f'Happiness Score Standard Deviation: {happiness_std}')
+    logger.info(f'happiness_score mean: {happiness_mean}')
+    logger.info(f'happiness_score median: {happiness_median}')
+    logger.info(f'happiness_score standard deviation: {happiness_std}')
     happiness_by_year_and_region = df.groupby(['year', 'regional_indicator']).agg({'happiness_score': ['mean']})
-    logger.info(f'Happiness Score Grouped By Year and Region: {happiness_by_year_and_region}')
+    logger.info(f'mean happiness score grouped by year and by region: {happiness_by_year_and_region}')
     return df
 
 
@@ -67,6 +69,9 @@ def descriptive_stats(df: pd.DataFrame) -> pd.DataFrame:
 def visual_exploration(df, numeric_columns):
     logger = get_run_logger()
     plt.hist(df['happiness_score'], bins=10, color='blue')
+    plt.title('Happiness Histogram')
+    plt.xlabel('Happiness Score')
+    plt.ylabel('Frequency')
     plt.savefig('assignments_01/outputs/happiness_histogram.png', dpi=300)
     logger.info('happiness histogram plot saved.')
     plt.clf()
@@ -82,6 +87,9 @@ def visual_exploration(df, numeric_columns):
 
     scatter_data = df[['year', 'gdp_per_capita', 'happiness_score']]
     sns.scatterplot(scatter_data, x='gdp_per_capita', y="happiness_score", hue='year')
+    plt.title('GDP vs. Happiness')
+    plt.xlabel('GDP per Capita')
+    plt.ylabel('Happiness Score')
     plt.savefig('assignments_01/outputs/gdp_vs_happiness.png', dpi=300)
     logger.info('gdp vs happiness plot saved.')
     plt.clf()
@@ -89,6 +97,7 @@ def visual_exploration(df, numeric_columns):
     heatmap = df[numeric_columns]
     happiness_correlation = heatmap.corr(numeric_only=True)
     sns.heatmap(happiness_correlation, annot=True, cmap='coolwarm', fmt='.2f')
+    plt.title('Correlation Heatmap')
     plt.savefig('assignments_01/outputs/correlation_heatmap.png', dpi=300)
     logger.info('correlation heatmap plot saved.')
     plt.close()
@@ -149,29 +158,31 @@ def summary_report(df, pval_minimum):
     logger = get_run_logger()
     countries_unique = df['country'].unique()
     num_countries = len(countries_unique)
+    num_years = len(df['year'].unique())
     region_mean = df.groupby('regional_indicator')['happiness_score'].mean()
     region_mean = region_mean.sort_values(ascending=False)
     top_3 = ', '.join(region_mean.index[:3])
     bottom_3 = ', '.join(region_mean.index[-3:])
     logger.info('The data shows a higher mean of happiness in more developed regions, and areas with greater focus on human rights.')
-    logger.info(f'The total number of countries in the dataset is {num_countries}')
-    logger.info(f'The top three regions in mean happiness score are {top_3}')
-    logger.info(f'The bottom three regions in mean happiness score are {bottom_3}')
+    logger.info(f'Total number of countries and years in the merged dataset: {num_countries} countries, {num_years} years')
+    logger.info(f'The top three regions by mean happiness score are {top_3}')
+    logger.info(f'The bottom three regions by mean happiness score are {bottom_3}')
     logger.info('The mean happiness score in 2020, after the start of the pandemic, was not different enough from the previous year to rule out chance as an explanation.')
     logger.info(f'The catagory most closely related to happiness score is {pval_minimum}')
 
 
 @flow
 def happiness_pipeline():
+    urls = get_urls()
     numeric_columns = ['happiness_score','gdp_per_capita','social_support','healthy_life_expectancy','freedom_to_make_life_choices','generosity','perceptions_of_corruption']
     db_path = 'assignments_01/outputs/merged_happiness.csv'
     if os.path.exists(db_path):
         answer = input("The database exists.  Do you want to recreate it (y/n)?")
         if answer.lower() == 'y':
             os.remove(db_path)
-            df = load_multiple_years_of_data(numeric_columns, db_path)
+            df = load_multiple_years_of_data(urls, numeric_columns, db_path)
     else:
-        df = load_multiple_years_of_data(numeric_columns, db_path)
+        df = load_multiple_years_of_data(urls, numeric_columns, db_path)
     df = pd.read_csv(db_path)
     descriptive_stats(df)
     visual_exploration(df, numeric_columns)

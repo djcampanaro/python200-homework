@@ -30,19 +30,26 @@ def data_pipeline(arr: np.ndarray) -> dict:
     series = create_series(arr)
     series = clean_data(series)
     series_dict = summarize_data(series)
-    for key, value in series_dict.items():
+    return series_dict
+
+
+@flow
+def pipeline_flow():
+    arr = np.array([12.0, 15.0, np.nan, 14.0, 10.0, np.nan, 18.0, 14.0, 16.0, 22.0, np.nan, 13.0])
+
+    data_dict = data_pipeline(arr)
+
+    for key, value in data_dict.items():
         print(f'{key}:{value}')
 
-    """
-    1. Prefect is more overhead than is necessary in this example because we are working
-    with a simple dataset that does not require network calls or caching to run. Using
-    Prefect creates many steps that go beyond what is necessary to process this data.
+    # 1. Prefect is more overhead than is necessary in this example because we are working
+    # with a simple dataset that does not require network calls or caching to run. Using
+    # Prefect creates many steps that go beyond what is necessary to process this data.
 
-    2. Realistic scenarios that benefit from Prefect are situations that require larger
-    datasets with network calls. If the situation benefits from caching slower processes
-    and retries for failed network calls, Prefect would be of great benefit.
-    """
+    # 2. Realistic scenarios that benefit from Prefect are situations that require larger
+    # datasets with network calls. If the situation benefits from caching slower processes
+    # and retries for failed network calls, Prefect would be of great benefit.
 
 
 if __name__ == "__main__":
-    data_pipeline()
+    pipeline_flow()
