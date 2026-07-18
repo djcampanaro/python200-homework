@@ -9,23 +9,20 @@ from prefect.logging import get_run_logger
 from scipy.stats import ttest_ind, pearsonr
 
 
-def get_urls():
-    url_prefix = 'https://raw.githubusercontent.com/Code-the-Dream-School/python-200-v1/refs/heads/main/assignments/resources/happiness_project/world_happiness_20'
-    years_list = [15,25]
-    return [f'{url_prefix}{year}.csv' for year in range(years_list[0], years_list[1])]
-
 # Task 1: Load Multiple Years Of Data
 @task(retries=3, retry_delay_seconds=2)
-def load_multiple_years_of_data(urls: list, numeric_columns: list, db_path: str):
+def load_multiple_years_of_data(numeric_columns: list, db_path: str):
     logger = get_run_logger()
 
     # Add each csv from the previous urls to create one dataset
     df_happiness = pd.DataFrame()
     num_columns = numeric_columns.copy()
     num_columns.append('ladder_score')
-    for url in urls:
-        year = url.split('ss_')[-1].split('.csv')[0]
-        add_df = pd.read_csv(url, sep=';')
+    happiness_project_path = '../python-200/assignments/resources/happiness_project/world_happiness_20'
+    for year_abrev in range(15, 25):
+        year = f'20{year_abrev}'
+        data_path = f'{happiness_project_path}{year_abrev}.csv'
+        add_df = pd.read_csv(data_path, sep=';')
         add_df = add_df.sort_values(by='Ranking')
         column_names = list(add_df.columns)
         col_renames = {}
@@ -130,7 +127,6 @@ def correlation_and_comparisons(df, numeric_columns) -> str:
     significant_comparisons = []
     significant_comparisons_adjusted = []
     adjusted_alpha = .05 / (len(numeric_columns) - 1)
-    logger.info(adjusted_alpha)
     pvals = {}
     for col in range(1, len(numeric_columns)):
         r, p = pearsonr(df[numeric_columns[0]], df[numeric_columns[col]])
@@ -173,16 +169,10 @@ def summary_report(df, pval_minimum):
 
 @flow
 def happiness_pipeline():
-    urls = get_urls()
     numeric_columns = ['happiness_score','gdp_per_capita','social_support','healthy_life_expectancy','freedom_to_make_life_choices','generosity','perceptions_of_corruption']
     db_path = 'assignments_01/outputs/merged_happiness.csv'
-    if os.path.exists(db_path):
-        answer = input("The database exists.  Do you want to recreate it (y/n)?")
-        if answer.lower() == 'y':
-            os.remove(db_path)
-            df = load_multiple_years_of_data(urls, numeric_columns, db_path)
-    else:
-        df = load_multiple_years_of_data(urls, numeric_columns, db_path)
+    if not os.path.exists(db_path):
+        df = load_multiple_years_of_data(numeric_columns, db_path)
     df = pd.read_csv(db_path)
     descriptive_stats(df)
     visual_exploration(df, numeric_columns)

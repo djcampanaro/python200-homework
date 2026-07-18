@@ -168,7 +168,7 @@ plt.show()
 group_a = [55, 60, 63, 70, 68, 62, 58, 65]
 group_b = [75, 80, 78, 90, 85, 79, 82, 88]
 
-plt.boxplot([group_a, group_b], labels=['Group A', 'Group B'])
+plt.boxplot([group_a, group_b], label=['Group A', 'Group B'])
 plt.title('Score Comparison')
 plt.show()
 
