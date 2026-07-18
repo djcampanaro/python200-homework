@@ -26,7 +26,6 @@ def summarize_data(clean_series: pd.Series) -> dict:
 
 @flow
 def data_pipeline(arr: np.ndarray) -> dict:
-    arr = np.array([12.0, 15.0, np.nan, 14.0, 10.0, np.nan, 18.0, 14.0, 16.0, 22.0, np.nan, 13.0])
     series = create_series(arr)
     series = clean_data(series)
     series_dict = summarize_data(series)
