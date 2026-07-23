@@ -115,7 +115,7 @@ print("age coefficient:    ", model_full.coef_[0])
 print("smoker coefficient: ", model_full.coef_[1])
 
 # The smoker coefficient shows how much medical costs increase with age at a constant. In this case, smoking increases 
-# medical costs by around $14,500
+# medical costs by around $14,500 with age constant.
 
 # Q5
 

@@ -18,8 +18,8 @@ print('First five rows: ', df.head())
 print('Data types: ', df.dtypes)
 
 plt.hist(df['G3'], bins=21)
-plt.title('Distribution of Final Math Grades')
-plt.xlabel('Final Grade')
+plt.title('Distribution of G3 Scores')
+plt.xlabel('G3 Score')
 plt.ylabel('Students')
 plt.savefig('outputs/g3_distribution.png', dpi=300)
 plt.close()
@@ -27,9 +27,7 @@ plt.close()
 # Task 2
 
 print('Shape before transformation: ', df.shape)
-df2 = df.copy()
-df2['G3'] = df2['G3'].apply(lambda x: x if x != 0 else np.nan)
-df2 = df2.dropna()
+df2 = df[df['G3'] > 0]
 print('Shape after transformation: ', df2.shape)
 
 # Keeping these rows with a G3 equal to 0 would skew the model. The other variables from the students who have a score of 
@@ -179,7 +177,7 @@ print("RMSE: ", np.sqrt(np.mean((y_predicted - y_test_all) ** 2)))
 for name, coef in zip(feature_cols, model.coef_):
     print(f"{name:12s}: {coef:+.3f}")
 
-# That size of the negative correlation for schoolsup I found the most surprising. I had thought that receiving extra help
+# That size of the negative correlation for schoolsup with all other factors fixed I found the most surprising. I had thought that receiving extra help
 # would improve scores. However the students who need the extra help are likely struggling enough to end up with lower 
 # scores even with the extra help.
 
