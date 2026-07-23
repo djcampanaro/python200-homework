@@ -18,8 +18,8 @@ print('First five rows: ', df.head())
 print('Data types: ', df.dtypes)
 
 plt.hist(df['G3'], bins=21)
-plt.title('Distribution of G3 Scores')
-plt.xlabel('G3 Score')
+plt.title('Distribution of Final Math Grades')
+plt.xlabel('Final Math Grades')
 plt.ylabel('Students')
 plt.savefig('outputs/g3_distribution.png', dpi=300)
 plt.close()
@@ -27,7 +27,8 @@ plt.close()
 # Task 2
 
 print('Shape before transformation: ', df.shape)
-df2 = df[df['G3'] > 0]
+df2 = df.copy()
+df2 = df2[df2['G3'] > 0]
 print('Shape after transformation: ', df2.shape)
 
 # Keeping these rows with a G3 equal to 0 would skew the model. The other variables from the students who have a score of 
@@ -103,6 +104,8 @@ plt.ylabel('Students')
 plt.savefig('outputs/students_per_walc.png', dpi=300)
 plt.clf()
 
+# This plot shows the number of students per level of Walc (weekend alcohol consumption)
+
 plt.bar(df2['Walc'], df2['absences'])
 plt.title('Weekend Alcohol Consumption vs. Absence')
 plt.xlabel('Weekend Alcohol Consumption')
@@ -110,6 +113,7 @@ plt.ylabel('Absences')
 plt.savefig('outputs/walc_vs_absence.png', dpi=300)
 plt.clf()
 
+# This plot shows the amount of weekend alcohol consumption compared to the number of absences
 # The number of students who are rated at 1 in Wac having such a high absence rate isn't too surprising. There are many 
 # more students listed at 1 than the other levels, and most students are probably absent for other reasons than how much 
 # they drank of the weekend. 
@@ -124,6 +128,7 @@ plt.title('Scaled Comparison of Student Variables Grouped By Age')
 plt.savefig('outputs/scaled_comparison_by_age.png', dpi=300)
 plt.clf()
 
+# This plot shows comparisons of G3 grades, failures, absences, study time, and number of students grouped by age
 # This graph shows an increasing failure rate, an inconsistent, but generally high, absence rate that spikes, and a G3 
 # rate on a general downward slope with two spikes. The first G3 spike happens between 19 to 20 year olds where the 
 # absence rate plummets. The failure rate also starts to level off around this area. The student body has decreased 
@@ -136,6 +141,7 @@ plt.ylabel('Time Spent Studying')
 plt.savefig('outputs/goout_vs_studytime.png', dpi=300)
 plt.close()
 
+# This plot compares the amount of time spent out with the amount of time spent studying.
 # Save for one dot at the bottom of goout 3, These results align with what I would expect. The students who don't spend as 
 # much time out spend more time studing than students who spend more of their time out.
 
@@ -186,7 +192,7 @@ for name, coef in zip(feature_cols, model.coef_):
 
 # If I was deploying this model, I would drop categories with a coefficient inside -.1 and .1 as they don't seem to have 
 # much of an effect on the prediction. These include traveltime, absences, freetime, and activities. I think the important 
-# catagories are those that fall outside of -.2 and .2.
+# catagories are those that fall outside of -.2 and .2, namely internet, studytime, failures, and goout.
 
 # Task 6
 
@@ -204,6 +210,8 @@ plt.close()
 # whereas the dots on the high side are mostly above the line. The middle does show a lot of variety in distance from the 
 # predicted line. Values above the diagonal are examples where the model underpredicted the G3 score of the given variables. 
 # Dots below the diagonal are when the model overpredicted the G3 scores based on the variables.
+
+# --- Summary ---
 
 # The filtered dataset brought the row count down to 357 while the size of the test set was 20% of that, which is 72. 
 # The RMSE and R² of the best model were 2.664 and 0.263 respectively. Adding all the variables from the data did bring 
