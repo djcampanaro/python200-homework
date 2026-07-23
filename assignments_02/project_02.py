@@ -213,3 +213,27 @@ plt.close()
 # typical range of error in the prediction. In this case, 2.664 is quite a good chunk of the possible 20 points for G3. 
 # The largest positive coefficient is internet access at home, while the largest negative coefficient is extra school 
 # support. 
+
+# Neglected Feature: The Power of G1
+
+feature_cols = ["age", "Medu", "Fedu", "traveltime", "studytime", "failures",
+                "absences", "freetime", "goout", "Walc", "schoolsup",
+                "internet", "higher", "activities", "sex", "G1"]
+X = df2[feature_cols].values
+y = df2["G3"].values
+X_train_G1, X_test_G1, y_train_G1, y_test_G1 = train_test_split(X, y, test_size=0.2, random_state=42)
+
+model = LinearRegression()
+model.fit(X_train_G1, y_train_G1)
+y_predicted = model.predict(X_test_G1)
+
+print("R² with G1: ", model.score(X_test_G1, y_test_G1))
+
+for name, coef in zip(feature_cols, model.coef_):
+    print(f"{name:12s}: {coef:+.3f}")
+
+# No, the higher R² with G1 included does not imply causation. However, there is a greater correlation that vastly 
+# improves the predictability of the model. I am not sure that this creates a stronger model for finding struggling 
+# students as it places much more strength on test performance than the other factors that affect them. On the other 
+# hand, it might provide a better balance to identify those factors. The coefficients are not so widely separated when 
+# including G1. Educators may use a constant for G1 to help identify and intervene with struggling students.
