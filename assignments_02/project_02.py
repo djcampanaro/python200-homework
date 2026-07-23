@@ -32,8 +32,8 @@ df2['G3'] = df2['G3'].apply(lambda x: x if x != 0 else np.nan)
 df2 = df2.dropna()
 print('Shape after transformation: ', df2.shape)
 
-# Keeping these rows with a G3 equal to 0 would skew the model. The other variables from the students who have a score of 0 in G3 would affect 
-# how the model predicts the outcome of other students with similar variables.
+# Keeping these rows with a G3 equal to 0 would skew the model. The other variables from the students who have a score of 
+# 0 in G3 would affect how the model predicts the outcome of other students with similar variables.
 
 print(df2.head())
 df2.loc[:, ['schoolsup', 'internet', 'higher', 'activities', 'sex']] = df2[['schoolsup', 'internet', 'higher', 'activities', 'sex']].replace({'yes': 1, 'no': 0, 'F': 0, 'M': 1})
@@ -212,7 +212,8 @@ plt.close()
 # down the typical prediction error and improve the predicting power of the model. The typical predition error is the 
 # typical range of error in the prediction. In this case, 2.664 is quite a good chunk of the possible 20 points for G3. 
 # The largest positive coefficient is internet access at home, while the largest negative coefficient is extra school 
-# support. 
+# support. One surprising result is how minimal studytime is with all other factors constant. While it still lands 
+# second in positive correlation, I expected it to be larger yet.
 
 # Neglected Feature: The Power of G1
 
