@@ -125,7 +125,7 @@ plt.plot(y_full_predicted, y_full_predicted, color='red')
 plt.title("Predicted vs Actual")
 plt.xlabel("Predicted Cost")
 plt.ylabel("Actual Cost")
-plt.savefig('outputs/predicted_vs_actual.png', dpi=300)
+plt.savefig('outputs/predicted_vs_actual_cost.png', dpi=300)
 plt.close()
 
 # The dots above the diagonal are when the model underpredicted the costs as related to age and smoking. The dots below 
