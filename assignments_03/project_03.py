@@ -81,12 +81,36 @@ COLUMN_NAMES = [
     "spam_label"                    # 57  1 = spam, 0 = not spam
 ]
 
+# Task 1: Load and Explore
+
 url = "https://archive.ics.uci.edu/ml/machine-learning-databases/spambase/spambase.data"
 response = requests.get(url)
 response.raise_for_status()
 
 df = pd.read_csv(BytesIO(response.content), header=None)
 df.columns = COLUMN_NAMES
-df.info()
-spam_mails = df['spam_label'].apply(lambda x: x if x == 1 else np.nan).dropna()
-print(spam_mails.count())
+# df.info()
+
+# There are 4601 emails in the dataset. The balance of the two classes is 1813, 39%, for spam and 2788, 61% for non-spam. With so many more examples of 
+# non-spam, this may cause the raw accuracy to score high even if the model is not very good as there are fewer opportunities to check emails for the 
+# selected categories.
+
+spam_v_ham = df[['word_freq_free', 'char_freq_!', 'capital_run_length_total', 'spam_label']]
+
+for col in spam_v_ham.columns:
+    if col == 'spam_label':
+        continue
+    plt.boxplot(spam_v_ham[col][spam_v_ham['spam_label'] == 0], positions=[0])
+    plt.boxplot(spam_v_ham[col][spam_v_ham['spam_label'] == 1], positions=[1])
+    plt.title(col)
+    plt.xticks([0, 1], ['Ham', 'Spam'])
+    plt.savefig(f'outputs/{col}_ham_v_spam.png')
+
+# There is definitely a visual difference between the two classes, but I would not say it is dramatic. The medians appear to be so low that there are 
+# many points that fall outside the boxplots. In some of these cases the highest outlier is in the non-spam class. The boxplot for the non-spam class 
+# is basically a line in each of the plots, showing most of the examples fall within a very small range.
+
+# The heavy skew toward zero for most of the word-frequency features tells me that the data may not be as varied as would be ideal for creating a robust model. Looking at the word frequency for 'free', 90% of the non-spam emails have zero occurrences. 
+
+free = spam_v_ham['word_freq_free'][spam_v_ham['spam_label'] == 0].apply(lambda x: 0 if x == 0 else np.nan).dropna()
+print(free.count())
