@@ -92,7 +92,7 @@ for k in k_values:
 
 # I would use k=5 in this case. 5 and 7 both have the highest mean cv score, so either works well. However, I would rather
 # use the lowever of the two as it is the first occurrence to strike the balance between underfitting and overfitting. I 
-# prefer to use than than move up to the next one that leans closer to overfitting.
+# prefer to use that rather than move up to the next one that leans closer to overfitting.
 
 # --- Classifier Evaluation ---
 
