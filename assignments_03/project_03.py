@@ -20,7 +20,8 @@ from sklearn.metrics import (
     precision_score,
     recall_score,
     f1_score,
-    classification_report
+    classification_report,
+    ConfusionMatrixDisplay
 )
 from sklearn.inspection import DecisionBoundaryDisplay
 
@@ -146,7 +147,7 @@ pca.fit(X_train_scaled)
 cumu_variance = np.cumsum(pca.explained_variance_ratio_)
 
 plt.plot(cumu_variance, range(len(cumu_variance)))
-# plt.savefig('outputs/spam_variance_explained.png')
+plt.savefig('outputs/spam_variance_explained.png')
 plt.clf()
 
 min, max = 0, (len(cumu_variance) - 1)
@@ -169,6 +170,7 @@ for i in range(round((max-min) / 2) + 1):
     else:
         max -= 1
 print('n: ', n)
+print(cumu_variance[n])
 
 X_train_pca = pca.transform(X_train_scaled)[:, :n]
 X_test_pca  = pca.transform(X_test_scaled)[:, :n]
@@ -291,6 +293,15 @@ plt.clf()
 # The two models agree on six of the top ten features for identifying spam emails. For the most part they align with my 
 # intuition as to what one would expect to see in spam emails, including the word 'free', exclamation points and dollar 
 # signs, as well as 'capital_run_length_total'. 
+
+cm = confusion_matrix(y_test, y_rf_preds)
+disp = ConfusionMatrixDisplay(confusion_matrix=cm)
+disp.plot(colorbar=False)
+plt.title('Random Forest Matrix')
+plt.savefig('outputs/best_model_confusion_matrix.png')
+plt.clf()
+
+# The type of error does my best model makes more often is labeling spam emails as non-spam.
 
 
 
