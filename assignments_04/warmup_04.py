@@ -128,7 +128,7 @@ grid_search.fit(X_train, y_train)
 
 best_lr_pipe = grid_search.best_estimator_
 
-# y_pred  = best_pipe.predict(X_test)
+# y_pred  = best_lr_pipe.predict(X_test)
 y_probs = best_lr_pipe.predict_proba(X_test)[:, 1]
 
 print(f'Best C:      {grid_search.best_params_["clf__C"]}')
@@ -211,7 +211,7 @@ load_clf = joblib.load("models/warmup_model.pkl")
 new_samples = np.array([
     [2.5,  1.2, -0.3,  0.8,  1.0, -0.5,  0.2,  0.9, -1.1,  0.4],
     [-1.0, 0.5,  0.9, -0.7, -0.2,  1.3, -0.8,  0.1,  0.5, -0.3],
-    [0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.1],
+    [0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0],
 ])
 
 load_preds = load_clf.predict(new_samples)
@@ -220,4 +220,8 @@ load_probs = load_clf.predict_proba(new_samples)[:, 1]
 print('Predicted class: ', load_preds)
 print(f'Predicted probabilities: {load_probs}')
 
-# 
+# I had expected the row of zeroes to predict a class of 0. I had 
+# thought that the zeroes would sit at or below the threshold and 
+# would create a predicted probablity closer to 0.5. In using random 
+# numbers, I thought the distribution might be more evenly spaced 
+# around 0.
