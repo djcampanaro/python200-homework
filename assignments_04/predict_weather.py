@@ -28,8 +28,8 @@ new_data = [
 
 new_df = pd.DataFrame(new_data, columns=metadata['features'])
 
-preds = clf.predict(new_data)
-probs = clf.predict_proba(new_data)[:, 1]
+preds = clf.predict(new_df)
+probs = clf.predict_proba(new_df)[:, 1]
 
 for i, (pred, prob) in enumerate(zip(preds, probs)):
     label = "good for running" if pred == 1 else "skip"
