@@ -18,6 +18,9 @@ from sklearn.metrics import (
     roc_curve
 )
 
+os.makedirs("outputs", exist_ok=True)
+os.makedirs("models", exist_ok=True)
+
 # Step 1: Fetch the Data
 
 url = "https://archive-api.open-meteo.com/v1/archive"
@@ -139,7 +142,7 @@ metadata = {
     "test_auc":         round(test_auc, 4),
     "city":             "Kingston, NY (lat 41.55, lon -73.59)",
     "thresholds":       {
-                            "max-temp":          7-26, #Celcius
+                            "max-temp":          '7-26', #Celcius
                             "min-temp":          4,
                             "precipitation-max": 6,    #mm
                             "wind-max":          30    #km pr hr 

@@ -1,7 +1,6 @@
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
 from sklearn.datasets import make_classification
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
@@ -170,6 +169,8 @@ print('\n')
 
 # Q3
 
+import pandas as pd
+
 results = pd.DataFrame(grid_search.cv_results_)
 print(
     results[["param_clf__C", "mean_test_score", "std_test_score"]]
@@ -217,8 +218,9 @@ new_samples = np.array([
 load_preds = load_clf.predict(new_samples)
 load_probs = load_clf.predict_proba(new_samples)[:, 1]
 
-print('Predicted class: ', load_preds)
-print(f'Predicted probabilities: {load_probs}')
+for i in range(len(new_samples)):
+    print('Predicted class: ', load_preds[i])
+    print(f'Predicted probabilities: {load_probs[i]}')
 
 # I had expected the row of zeroes to predict a class of 0. I had 
 # thought that the zeroes would sit at or below the threshold and 

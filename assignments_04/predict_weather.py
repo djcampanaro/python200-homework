@@ -4,7 +4,7 @@ import pandas as pd
 
 # Task 1: Load and Verify
 
-clf = joblib.load('models/weather_classifiesr.pkl')
+clf = joblib.load('models/weather_classifier.pkl')
 
 with open('models/weather_classifier_metadata.json', 'r') as file:
     metadata = json.load(file)
@@ -16,21 +16,26 @@ print("\n")
 
 # Task 2: Predict on New Data
 
-new_data = pd.DataFrame({
-    'temperature_2m_max': [23, 15, 7, 10, 5, 8, 0], 
-    'temperature_2m_min': [15, 8, 4, 3, -4, -1, -5], 
-    'precipitation_sum': [0, 4, 6, 5, 9, 5, 4], 
-    'wind_speed_10m_max': [10, 20, 30, 31, 40, 35, 45]
-})
+new_data = [
+    [23, 15, 0, 10],
+    [15, 8, 4, 20],
+    [7, 4, 6, 30], #borderline case
+    [10, 3, 5, 31],
+    [5, -4, 9, 40],
+    [8, -1, 5, 35],
+    [0, -5, 4, 45],
+]
+
+new_df = pd.DataFrame(new_data, columns=metadata['features'])
 
 preds = clf.predict(new_data)
 probs = clf.predict_proba(new_data)[:, 1]
 
 for i, (pred, prob) in enumerate(zip(preds, probs)):
     label = "good for running" if pred == 1 else "skip"
-    print(f"Input feature values: \n{new_data.loc[i, :]}")
+    print(f"Input feature values: \n{new_df.loc[i, :]}")
     print(f"Predicted label: {label}")
-    print(f"Model confidence: {prob:.2f})")
+    print(f"Model confidence: {prob:.2f}")
     print("\n")
 
 # Task 3: Reflect
