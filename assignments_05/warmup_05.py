@@ -146,10 +146,12 @@ for r in range(len(reviews)):
     messages = [{
         "role": "user", 
         "content": f"""
-            Classify the sentiment of this review as positive, negative, or mixed: {reviews[r]} 
+            Classify the sentiment of this review as positive, negative, or mixed following this example: 
             Example:
             Review: "Fast shipping but the item arrived damaged."
             Sentiment: mixed
+
+            {reviews[r]} 
             """
     }]
     response = get_completion(messages=messages)

@@ -241,12 +241,11 @@ if __name__ == "__main__":
 
 # --- Option A ---
 
-# 2. If the user were submit the model's response to an employer without reviewing it, 
+# 2: If the user were submit the model's response to an employer without reviewing it, 
 # they could end up sending incorrect or incomplete information. If the model were to 
 # return something that either did not fit the job or explicitly was outsite the bounds 
 # of applicant's cover letter/resume, it would look quite bad to the prospective employer.
-
-# 3. If this were deployed professionally, I would add a UI warning/disclaimer regarding 
+# 3: If this were deployed professionally, I would add a UI warning/disclaimer regarding 
 # the user's need to review all responses and that the model may not fit their specific 
 # industry. I would also make sure that there was a moderation guardrail in place to ensure 
 # that the chat is solely based around the job application help and doesn't veer into 
