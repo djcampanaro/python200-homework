@@ -66,7 +66,6 @@ def rewrite_bullets(bullets: list[str]) -> list[dict]:
     except json.JSONDecodeError:
         print("Error: response was not valid JSON")
         print(response)
-        return response
 
 bullets = [
     "Helped customers with their problems",
@@ -74,10 +73,10 @@ bullets = [
     "Worked with a team to finish the project on time"
 ]
 
-bullets_rewrite = rewrite_bullets(bullets)
-for r in bullets_rewrite:
-    print('Original:', r['original'])
-    print('Improved:', r['improved'])
+# bullets_rewrite = rewrite_bullets(bullets)
+# for r in bullets_rewrite:
+#     print('Original:', r['original'])
+#     print('Improved:', r['improved'])
 
 # These bullets are weak because they are very general and do not exemplify 
 # how the action affected the company with positive results. The improved 
@@ -210,9 +209,10 @@ def run_chatbot():
                     raw_bullets.append(line)
             # YOUR CODE: call rewrite_bullets() and print the results
             bullets_rewrite = rewrite_bullets(raw_bullets)
-            for r in bullets_rewrite:
-                print('Original:', r['original'])
-                print('Improved:', r['improved'])
+            if bullets_rewrite:
+                for r in bullets_rewrite:
+                    print('Original:', r['original'])
+                    print('Improved:', r['improved'])
 
         # 6. Check if the user wants a cover letter
         elif "cover letter" in user_input.lower():

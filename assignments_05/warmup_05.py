@@ -216,7 +216,7 @@ review = "I've been using this tool for three months. It handles large datasets 
 
 messages = [{
     "role": "user", 
-    "content": """
+    "content": f"""
         Analyze the sentiment of this customer review and return the result only as valid JSON, with no delimiters.
         Return keys: sentiment, confidence (0-1), reason.
 
@@ -299,4 +299,8 @@ making it a powerful tool for tasks requiring natural language understanding."""
 # The general message between the two descriptions is very similar. The difference 
 # is that the OpenAI version uses a few more specifics such as refering to a LLM as 
 # an advanced artificial intelligence system, and mentioning deep learning and neural 
-# networks as tools it uses to process the massive amounts of data.
+# networks as tools it uses to process the massive amounts of data. One advantage to 
+# running a model locally is that you can use it whenever you need with or without an 
+# internet connection. A disadvantage is that it does not update or improve itself, and 
+# is stuck in a moment in time without further data. So, one would need to keep on top 
+# of the local models they choose.
