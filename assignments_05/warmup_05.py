@@ -34,7 +34,7 @@ response = get_completion(messages=messages)
 
 print('API response: ', response.choices[0].message.content)
 print('Model used: ', response.model)
-print('Tokens used: ', response.usage)
+print('Tokens used: ', response.usage.total_tokens)
 print('\n')
 
 # API Q2

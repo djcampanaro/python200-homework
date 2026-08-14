@@ -27,7 +27,11 @@ prompt = 'You are a job application coach. You are helping a user who ' \
 'you may not know much about the particular industry norms, and that the ' \
 'user should use their best judgment.'
 
-# One deliverate choice was to ask the model to not make up qualifications for 
+messages = [{"role": "system", "content": prompt}]
+
+response = get_completion(messages=messages)
+
+# One deliberate choice was to ask the model to not make up qualifications for 
 # the user. I wanted to be sure that the model stuck to the skills and experience 
 # that is listed by the user and didn't overelaborate their abilities.
 
@@ -62,6 +66,7 @@ def rewrite_bullets(bullets: list[str]) -> list[dict]:
     except json.JSONDecodeError:
         print("Error: response was not valid JSON")
         print(response)
+        return response
 
 bullets = [
     "Helped customers with their problems",
@@ -152,8 +157,8 @@ def is_safe(text: str) -> bool:
     # Your code here: return True if safe, False if flagged, and print a message if flagged
     if flagged:
         print('This message is not acceptable in its current state. Please rephrase your message.')
-        return flagged
-    return not flagged
+        return False
+    return True
 
 is_safe("I want to kill my neighbor.")
 is_safe("I want to water my neighbor's plants.")
@@ -233,6 +238,8 @@ def run_chatbot():
 
 if __name__ == "__main__":
     run_chatbot()
+
+# --- Option A ---
 
 # 2. If the user were submit the model's response to an employer without reviewing it, 
 # they could end up sending incorrect or incomplete information. If the model were to 
