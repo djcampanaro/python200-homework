@@ -48,8 +48,53 @@ for q in questions:
     print(f"Text Snippet: {node_with_score.node.get_content()[:200]}...")
     print("-" * 30)
 
-#
+# The assisstant sounded confident in each of the answers. It is surprising that 
+# the first question about weekend hours has the our_story.txt document as its top 
+# node. The hours can be found in the faq.txt document, so I thought that would be 
+# the top node. Similarly, the alternative milk is mentioned in menu.txt, but 
+# seasonal_specials.txt is listed as the top node for that answer.
 
 # Step 5: Find a Failure
 
+question = 'how many different are there?'
 
+print(f"\nQ: {question}")
+response = query_engine.query(question)
+print("A:", response)
+
+for node_with_score in response.source_nodes:
+    print(f"Document Name: {node_with_score.metadata['file_name']}")
+    print(f"Similarity Score: {node_with_score.score:.4f}")
+    print(f"Text Snippet: {node_with_score.node.get_content()[:200]}...")
+    print("-" * 30)
+
+# I asked 'how many different are there?' in an attempt to be vauge as though the user 
+# forgot to enter the relevant information. I expected it to be difficult because there 
+# is no context as to what the user is asking. It could be related to drink sizes, types 
+# of drinks, locations, etc.
+# The model guessed anyhow and responded with the number of seasonal specials currently 
+# available. 
+# The model still seems confident but only provides a one sentence answer without any 
+# other detail. One has to be careful with AI-generated responses as they will find what 
+# information they can and present it as the answer to the prompt. Giving more context 
+# and double checking when dealing with sensitive or critical information is very 
+# important.
+# To improve this system, I would add a prompt ability for the user to ask questions and 
+# clarify when the context might be unclear. I would set a threshold for the similarity 
+# score, so that they system can ask for added context. I would also add a warning that 
+# this is a generated chat and that all information should be evaluated by the user.
+
+# Step 6: Reflection
+
+# 1. It took three lines, including import statement, to build the index. One more line to 
+# get to the query_engine. Using a framework is very valuable in the amount of time and 
+# space saved. Understanding what the framework is doing is important, but utilizing the 
+# framework, especially in a production program, is a much more efficient way to build the 
+# semantic RAG.
+# 2. This type of system would be valuable to a business with lots of information to parse 
+# through for their customers. Building a chatbot to assist customers on a health insurance 
+# site would help save time and resources, and provide quick responses to the user's queries.
+# 3. One failure mode that RAG cannot solve when working correctly is being queried on 
+# information that has not been made available either through training or provided 
+# documentation. The system will search for the most relevant information and still present 
+# an answer, but it will not be able to answer the query fully and correctly.
