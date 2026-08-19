@@ -20,7 +20,8 @@ else:
 # have produced. Fine-tuning a model with give all the advantages of a LLM but in the 
 # unique voice the company wishes to create.
 
-# Scenario C: The best approach is prompt engineering. The data analyst needs a one-off 
+# Scenario C: The best approach is prompt engineering. This is a single document and does 
+# not require building retrieval infrastructure. The data analyst needs a one-off 
 # job done by the model and can reference the report in their prompt. There is no need 
 # to build upon the model or tune it in a way that benefits this use as it will not be 
 # used as such again.
@@ -42,10 +43,10 @@ else:
 # Concepts Q3
 
 # steps = [
+#     "Receive the user's query",                   - A user queries the system with text
 #     "Extract text from source documents",         - The text from all the documents from the source are collected and stored
 #     "Split text into chunks",                     - The text is then split into chunks for better ingestion
 #     "Convert text chunks into embeddings",        - The chunks are converted into embeddings so they can be easily compared with queries
-#     "Receive the user's query",                   - A user queries the system with text
 #     "Embed the user's query",                     - The user's text is embedded for comparison to the previously embedded chunks
 #     "Retrieve the most relevant chunks",          - The most relevant chunks based on the cosine similarity to the embedded query text are pulled
 #     "Inject retrieved chunks into the prompt",    - The relevant chunks are added to the prompt along with the query and sent to the model
@@ -63,7 +64,7 @@ def simple_keyword_retrieval(query, documents, verbose=True):
     stopwords = {
         "a", "an", "the", "and", "or", "in", "on", "of", "for", "to", "is",
         "are", "was", "were", "by", "with", "at", "from", "that", "this",
-        "as", "be", "it", "its", "their", "they", "we", "you", "our"
+        "as", "be", "it", "its", "their", "they", "we", "you", "our", "your"
     }
     translator = str.maketrans("", "", string.punctuation)
 
@@ -110,10 +111,9 @@ documents = {
 
 keyword = simple_keyword_retrieval(query=query, documents=documents)
 
-# The document that was selected as the best match was 'loyalty.txt'. Once the words 
-# of the query were filtered, three of the four documents had an overlap, and they 
-# all tied at 1. When the scores are sorted in descending order, the loyaly document 
-# ends up on top and is called as best[0].
+# The document that was selected as the best match was 'hours.txt'. After 
+# adding "your" to the list of stopwords, "weekends" is the only word that 
+# overlaps. So, hours.txt has one overlap and all others have zero.
 
 # Keyword Q2
 
@@ -135,9 +135,10 @@ keyword_2 = simple_keyword_retrieval(query=query, documents=documents)
 
 query = "How do I sign up for rewards?"
 
-keyword_2 = simple_keyword_retrieval(query=query, documents=documents)
+keyword_3 = simple_keyword_retrieval(query=query, documents=documents)
 
-# Yes, my prediction was correct.
+# Yes, my prediction was correct. No document was selected because the query terms did not 
+# overlap with any document terms after stopword filtering.
 
 # --- Semantic RAG Concepts ---
 
@@ -154,7 +155,7 @@ keyword_2 = simple_keyword_retrieval(query=query, documents=documents)
 
 # | Feature                    | Keyword RAG                       | Semantic RAG              |
 # |----------------------------|-----------------------------------|---------------------------|
-# | What is compared?          | Exact word overlap                | embeddings                |
+# | What is compared?          | Exact word overlap                | vector embeddings         |
 # | What is retrieved?         | Full document                     | text chunks               |
 # | Can it handle synonyms?    | No                                | yes                       |
 # | Storage format             | Plain text dictionary             | vector store index        |
@@ -183,7 +184,7 @@ for q in questions:
     
     for node_with_score in response.source_nodes:
         print(f"Similarity Score: {node_with_score.score:.4f}")
-        print(f"Text Snippet: {node_with_score.node.get_content()[:150]}...")
+        print(f"First 150 characters of the chunk text: {node_with_score.node.get_content()[:150]}...")
         print("-" * 30)
 
 # Yes, for the most part the retrieved chunks are relevant to the queries. The first 
@@ -259,9 +260,9 @@ print("Relevancy Result: " + str(relevancy_result.score))
 q2 = "How many Super Bowls have the Colts won?"
 response = query_engine.query(q2)
 
-faithfulness_result = faithfulness_evaluator.evaluate_response(query=q, response=response)
+faithfulness_result = faithfulness_evaluator.evaluate_response(query=q2, response=response)
 print("Faithfulness Evaluation: " + str(faithfulness_result.score))
-relevancy_result = relevancy_evaluator.evaluate_response(query=q, response=response)
+relevancy_result = relevancy_evaluator.evaluate_response(query=q2, response=response)
 print("Relevancy Result: " + str(relevancy_result.score))
 
 # A faithfulness score of 1.0 means the RAG implementation has passed the evaluation. 
