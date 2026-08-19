@@ -10,7 +10,7 @@ if load_dotenv():
 else:
     print("Warning: could not load API key. Check your .env file.")
 
-docs_dir = Path("assignments_06/groundwork_docs")
+docs_dir = Path("assignments_06/resources/groundwork_docs")
 assert docs_dir.exists(), f"Document directory not found: {docs_dir}"
 
 # Step 2: Load the Documents
@@ -43,7 +43,7 @@ for q in questions:
     print("A:", response)
 
     node_with_score = response.source_nodes[0]
-    print("TOP RETRIEVED NODE:")
+    print("TOP RETRIEVED SOURCE NODE:")
     print(f"Document Name: {node_with_score.metadata['file_name']}")
     print(f"Similarity Score: {node_with_score.score:.4f}")
     print(f"The first 200 characters of the chunk text: {node_with_score.node.get_content()[:200]}...")
@@ -66,7 +66,7 @@ print("A:", response)
 for node_with_score in response.source_nodes:
     print(f"Document Name: {node_with_score.metadata['file_name']}")
     print(f"Similarity Score: {node_with_score.score:.4f}")
-    print(f"Text Snippet: {node_with_score.node.get_content()[:200]}...")
+    print(f"First 200 characters of text: {node_with_score.node.get_content()[:200]}...")
     print("-" * 30)
 
 # I asked 'how many different are there?' in an attempt to be vauge as though the user 

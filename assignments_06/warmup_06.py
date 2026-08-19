@@ -43,14 +43,14 @@ else:
 # Concepts Q3
 
 # steps = [
-#     "Receive the user's query",                   - A user queries the system with text
-#     "Extract text from source documents",         - The text from all the documents from the source are collected and stored
-#     "Split text into chunks",                     - The text is then split into chunks for better ingestion
-#     "Convert text chunks into embeddings",        - The chunks are converted into embeddings so they can be easily compared with queries
-#     "Embed the user's query",                     - The user's text is embedded for comparison to the previously embedded chunks
-#     "Retrieve the most relevant chunks",          - The most relevant chunks based on the cosine similarity to the embedded query text are pulled
-#     "Inject retrieved chunks into the prompt",    - The relevant chunks are added to the prompt along with the query and sent to the model
-#     "Generate a response from the LLM",           - The model responds using the provided information, and the results are displayed to the user
+#     "Receive the user's query",                   # A user queries the system with text
+#     "Extract text from source documents",         # The text from all the documents from the source are collected and stored
+#     "Split text into chunks",                     # The text is then split into chunks for better ingestion
+#     "Convert text chunks into embeddings",        # The chunks are converted into embeddings so they can be easily compared with queries
+#     "Embed the user's query",                     # The user's text is embedded for comparison to the previously embedded chunks
+#     "Retrieve the most relevant chunks",          # The most relevant chunks based on the cosine similarity to the embedded query text are pulled
+#     "Inject retrieved chunks into the prompt",    # The relevant chunks are added to the prompt along with the query and sent to the model
+#     "Generate a response from the LLM",           # The model responds using the provided information, and the results are displayed to the user
 # ]
 
 # --- Keyword RAG ---
@@ -110,6 +110,7 @@ documents = {
 }
 
 keyword = simple_keyword_retrieval(query=query, documents=documents)
+print(f"Selected Document: {keyword[0][0]}")
 
 # The document that was selected as the best match was 'hours.txt'. After 
 # adding "your" to the list of stopwords, "weekends" is the only word that 
@@ -120,6 +121,7 @@ keyword = simple_keyword_retrieval(query=query, documents=documents)
 query = "Do you have anything without caffeine?"
 
 keyword_2 = simple_keyword_retrieval(query=query, documents=documents)
+print(f"Selected Document: {keyword_2[0][0]}")
 
 # No document was selected, keyword RAG did not get this right because after removing all 
 # stopwords, the remaining tokens did not overlap with any of the documents. Because none 
