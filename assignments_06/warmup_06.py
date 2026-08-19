@@ -265,17 +265,17 @@ print("Faithfulness Evaluation: " + str(faithfulness_result.score))
 relevancy_result = relevancy_evaluator.evaluate_response(query=q2, response=response)
 print("Relevancy Result: " + str(relevancy_result.score))
 
-# A faithfulness score of 1.0 means the RAG implementation has passed the evaluation. 
+# - A faithfulness score of 1.0 means the RAG implementation has passed the evaluation. 
 # The response has remained faithful to the contexts of the retrieved chunks. A score 
 # of 0.0 implies it has not remained faithful to the contexts of the retrieved 
 # information, and has provided halucinations or inaccurate information.
-# Relevancy measures the relevancy of the response to the query using the retrieved 
+# - Relevancy measures the relevancy of the response to the query using the retrieved 
 # chunks, whereas faithfulness measures the relevancy of the response to the contexts 
 # of the retrieved chunks.
-# Yes, the scores changed between my two examples. The first example was relevant to 
+# - Yes, the scores changed between my two examples. The first example was relevant to 
 # the documents and produced a response related to the query and faithful to the 
 # retrieved contexts. The second question had no relevance to the provided documents. 
-# So, the response was not relevant to the query or faithful to the retrieved contexts.
+# - So, the response was not relevant to the query or faithful to the retrieved contexts.
 # The "LLM-as-a-judge" approach uses an appropriately trained llm to evaluate the RAG 
 # implementation at a very fast rate. It evaluates based on the accuracy of natural 
 # language rather than the numerical or categorical assessments of a simple accuracy 

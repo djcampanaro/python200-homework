@@ -10,7 +10,7 @@ if load_dotenv():
 else:
     print("Warning: could not load API key. Check your .env file.")
 
-docs_dir = Path("../../python-200/lessons/06_AI_augmentation/resources/groundwork_docs")
+docs_dir = Path("assignments_06/groundwork_docs")
 assert docs_dir.exists(), f"Document directory not found: {docs_dir}"
 
 # Step 2: Load the Documents
@@ -43,9 +43,10 @@ for q in questions:
     print("A:", response)
 
     node_with_score = response.source_nodes[0]
+    print("TOP RETRIEVED NODE:")
     print(f"Document Name: {node_with_score.metadata['file_name']}")
     print(f"Similarity Score: {node_with_score.score:.4f}")
-    print(f"Text Snippet: {node_with_score.node.get_content()[:200]}...")
+    print(f"The first 200 characters of the chunk text: {node_with_score.node.get_content()[:200]}...")
     print("-" * 30)
 
 # The assisstant sounded confident in each of the answers. It is surprising that 
