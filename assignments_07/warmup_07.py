@@ -496,7 +496,7 @@ class CsvManager:
         correlation = {
             "col1": col1,
             "col2": col2,
-            "person_r": round(r, 4),
+            "pearson_r": round(r, 4),
             "p_value": round(p, 4)
         }
         return correlation
@@ -753,7 +753,10 @@ def compute_correlation(col1: str, col2: str) -> dict:
 
 print(compute_correlation.description)
 
-# * Add a comment comparing what smolagents generates automatically to the JSON schema you wrote manually in Q4. What information does smolagents need from you (the developer) in order to produce a good description?
+# Smolagents generate all the information needed for an AI agent to understand how a tool works, what is 
+# needed and what is produced. It does this without the nesting needed for the JSON schema. The information 
+# it needs is a good description of the tool, the arguments and their types, and what is returned along with 
+# its type.
 
 # Q8
 
