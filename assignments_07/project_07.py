@@ -133,13 +133,6 @@ def get_top_n_countries(column: str, year: int, n: int = 5) -> dict:
 
     if df == None:
             return error_df
-    
-    try:
-        if len(year) < 4:
-            year = int('20' + year)
-    except TypeError:
-        if 14 < year < 25:
-            year += 2000
 
     if not column or not year:
         return {"error": f"Missing a required variable. Column options: {df.columns.tolist()}, Year options: 2015-2024"}
@@ -189,43 +182,45 @@ agent = CodeAgent(
     max_steps=8,
 )
 
-# Task 3: Run Guided Queries
+if __name__ == "__main__":
 
-queries = [
-    "Load the happiness data and tell me its shape and column names.",
-    "Summarize the happiness_score column.",
-    "What is the correlation between gdp_per_capita and happiness_score? Is it statistically significant?",
-    "Show me the top 5 happiest countries in 2020.",
-    "Plot happiness_score over the years as a line chart, with one line per region. Save the plot to outputs/happiness_by_region.png.",
-]
+    # Task 3: Run Guided Queries
 
-for query in queries:
-    print(f"\n--- Query: {query} ---")
-    response = agent.run(query, reset=False)
-    print(response)
+    queries = [
+        "Load the happiness data and tell me its shape and column names.",
+        "Summarize the happiness_score column.",
+        "What is the correlation between gdp_per_capita and happiness_score? Is it statistically significant?",
+        "Show me the top 5 happiest countries in 2020.",
+        "Plot happiness_score over the years as a line chart, with one line per region. Save the plot to outputs/happiness_by_region.png.",
+    ]
 
-# Task 4: Your Own Questions
+    for query in queries:
+        print(f"\n--- Query: {query} ---")
+        response = agent.run(query, reset=False)
+        print(response)
 
-# My query 1
-my_query_1 = "Rank the top 5 countries for social_support over all the years provided."   # replace with your question
-response_1 = agent.run(my_query_1, reset=False)
-print(response_1)
-# Comment: Did this trigger tool use, code generation, or both?
-# This query triggered both tool use and code generation. The agent used the tool 
-# get_top_n_coutries to gather a list of the top 5 countries for each year. It then 
-# wrote its own code to find which countries had the most occurences and give the 
-# answer of the top 5 over all years provided.
+    # Task 4: Your Own Questions
 
-# My query 2
-my_query_2 = "Plot the correlation between perceptions_of_corruption and healthy life expectancy for all countries in 2024. Save the plot to outputs/happiness_by_region.png."   # replace with your question
-response_2 = agent.run(my_query_2, reset=False)
-print(response_2)
-# Comment: Did this trigger tool use, code generation, or both?
-# This query triggered code generation. I had expected it to trigger tool use as well, 
-# but the mention of correlation in the query may not have been enough to get the agent 
-# to use the correlation tool. I left the plot description ambiguous to see what the agent 
-# would decide to use. It created a scatter plot of the two columns and added a linear 
-# regression line.
+    # My query 1
+    my_query_1 = "Rank the top 5 countries for social_support over all the years provided."   # replace with your question
+    response_1 = agent.run(my_query_1, reset=False)
+    print(response_1)
+    # Comment: Did this trigger tool use, code generation, or both?
+    # This query triggered both tool use and code generation. The agent used the tool 
+    # get_top_n_coutries to gather a list of the top 5 countries for each year. It then 
+    # wrote its own code to find which countries had the most occurences and give the 
+    # answer of the top 5 over all years provided.
+
+    # My query 2
+    my_query_2 = "Plot the correlation between perceptions_of_corruption and healthy life expectancy for all countries in 2024. Save the plot to outputs/happiness_by_region.png."   # replace with your question
+    response_2 = agent.run(my_query_2, reset=False)
+    print(response_2)
+    # Comment: Did this trigger tool use, code generation, or both?
+    # This query triggered code generation. I had expected it to trigger tool use as well, 
+    # but the mention of correlation in the query may not have been enough to get the agent 
+    # to use the correlation tool. I left the plot description ambiguous to see what the agent 
+    # would decide to use. It created a scatter plot of the two columns and added a linear 
+    # regression line.
 
 # Task 5: Reflection
 

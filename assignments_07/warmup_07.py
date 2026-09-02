@@ -233,17 +233,8 @@ def run_agent(user_prompt: str) -> str:
             if function_name == 'get_current_time':
                 tool_result = get_current_time()
             elif function_name == 'celsius_to_fahrenheit':
-                celsius_temp = None
-                user_prompt_list = user_prompt.split(' ')
-                for u in user_prompt_list:
-                    try:
-                        u = int(u)
-                        celsius_temp = u
-                        break
-                    except ValueError:
-                        pass
-                if celsius_temp:
-                    tool_result = celsius_to_fahrenheit(celsius_temp)
+                arguments = json.loads(tool_call.function.arguments)
+                tool_result = celsius_to_fahrenheit(arguments['celsius'])
             else:
                 tool_result = f'Error: unknown tool {function_name}.'
 
