@@ -212,7 +212,7 @@ if __name__ == "__main__":
     # answer of the top 5 over all years provided.
 
     # My query 2
-    my_query_2 = "Plot the correlation between perceptions_of_corruption and healthy life expectancy for all countries in 2024. Save the plot to outputs/happiness_by_region.png."   # replace with your question
+    my_query_2 = "Plot the correlation between perceptions_of_corruption and healthy life expectancy for all countries in 2024. Save the plot to outputs/corruption_vs_life_expectancy.png."   # replace with your question
     response_2 = agent.run(my_query_2, reset=False)
     print(response_2)
     # Comment: Did this trigger tool use, code generation, or both?
