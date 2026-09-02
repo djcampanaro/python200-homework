@@ -149,7 +149,7 @@ def run_agent(user_prompt: str) -> str:
 # Calling run_agent with the question about Celsius conversion will trigger a tool call as we are supplying the system with tools. It will look for a tool related to the question, but it won't find one.
 # There will be two API calls. The first will look for the tool, and the second will respond without a tool.
 
-# print(run_agent("Convert -40 degrees Celsius to Fahrenheit"))
+print(run_agent("Convert 100 degrees Celsius to Fahrenheit"))
 
 # Yes the prediction is correct, and the model behaved as expected.
 
@@ -233,7 +233,17 @@ def run_agent(user_prompt: str) -> str:
             if function_name == 'get_current_time':
                 tool_result = get_current_time()
             elif function_name == 'celsius_to_fahrenheit':
-                tool_result = 'celsius_to_fahrenheit'
+                celsius_temp = None
+                user_prompt_list = user_prompt.split(' ')
+                for u in user_prompt_list:
+                    try:
+                        u = int(u)
+                        celsius_temp = u
+                        break
+                    except ValueError:
+                        pass
+                if celsius_temp:
+                    tool_result = celsius_to_fahrenheit(celsius_temp)
             else:
                 tool_result = f'Error: unknown tool {function_name}.'
 

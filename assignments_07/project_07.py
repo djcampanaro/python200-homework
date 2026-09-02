@@ -16,6 +16,7 @@ api_key = os.getenv("OPENAI_API_KEY")
 # Task 1: Define Your Tools
 
 df = None
+error_df = {'error': 'There is no dataframe loaded'}
 
 @tool
 def load_happiness_data() -> dict:
@@ -30,7 +31,9 @@ def load_happiness_data() -> dict:
     """
     global df
 
-    if not DATA_PATH:
+    try:
+        df = pd.read_csv(DATA_PATH)
+    except FileNotFoundError:
         df_happiness = pd.DataFrame()
         numeric_columns = ['happiness_score','gdp_per_capita','social_support','healthy_life_expectancy','freedom_to_make_life_choices','generosity','perceptions_of_corruption']
         num_columns = numeric_columns.copy()
@@ -57,8 +60,8 @@ def load_happiness_data() -> dict:
             df_happiness = pd.concat([df_happiness, add_df])
             df_happiness = df_happiness.reset_index(drop=True)
         df_happiness.to_csv(DATA_PATH, index=False)
+        df = df_happiness
 
-    df = pd.read_csv(DATA_PATH)
     df_dict = {"shape": df.shape, "columns": df.columns}
 
     return df_dict
@@ -76,6 +79,9 @@ def summarize_column(column: str) -> dict:
         A dict of basic stats for the column, or an error dict.
     """
 
+    if df == None:
+        return error_df
+    
     if column not in df.columns:
         return {"error": f"'{column}' is not a column. Options: {df.columns.tolist()}"}
 
@@ -92,15 +98,16 @@ def compute_correlation(col1: str, col2: str) -> dict:
     Returns: 
         A dict containing keys 'col1', 'col2', 'pearson_r', and 'p_value' along with their corresponding values or an error dict.
     """
+
+    if df == None:
+            return error_df
+    
     if col1 not in df.columns:
         return {"error": f"'{col1}' is not a column. Options: {df.columns.tolist()}"}
     elif col2 not in df.columns:
         return {"error": f"'{col2}' is not a column. Options: {df.columns.tolist()}"}
     
-    column1 = df[col1]
-    column2 = df[col2]
-    
-    r, p = pearsonr(column1, column2)
+    r, p = pearsonr(df[col1], df[col2])
     correlation = {
         "col1": col1,
         "col2": col2,
@@ -123,6 +130,10 @@ def get_top_n_countries(column: str, year: int, n: int = 5) -> dict:
     Returns:
         A list of dictionaries containing keys 'country' and the selected column's name for the top n countries after sort
     """
+
+    if df == None:
+            return error_df
+    
     try:
         if len(year) < 4:
             year = int('20' + year)
@@ -138,6 +149,8 @@ def get_top_n_countries(column: str, year: int, n: int = 5) -> dict:
         return {"error": f"'{year}' is not in range. Options: 2015-2024"}
     
     countries_sorted = df[df['year'] == year][['country', column]].sort_values(by=column, ascending=False).reset_index()
+    if n > len(countries_sorted):
+        return {'error': 'The requested number exceeds the number of countries with data that year.'}
     top_n_countries = []
     for i in range(n):
         top_n_countries.append({'country': countries_sorted.loc[i, 'country'], column: countries_sorted.loc[i, column]})
