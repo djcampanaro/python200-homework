@@ -79,7 +79,7 @@ def summarize_column(column: str) -> dict:
         A dict of basic stats for the column, or an error dict.
     """
 
-    if df == None:
+    if df is None:
         return error_df
     
     if column not in df.columns:
@@ -99,7 +99,7 @@ def compute_correlation(col1: str, col2: str) -> dict:
         A dict containing keys 'col1', 'col2', 'pearson_r', and 'p_value' along with their corresponding values or an error dict.
     """
 
-    if df == None:
+    if df is None:
             return error_df
     
     if col1 not in df.columns:
@@ -131,7 +131,7 @@ def get_top_n_countries(column: str, year: int, n: int = 5) -> dict:
         A list of dictionaries containing keys 'country' and the selected column's name for the top n countries after sort
     """
 
-    if df == None:
+    if df is None:
             return error_df
 
     if not column or not year:
