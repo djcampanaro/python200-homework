@@ -95,4 +95,11 @@ of the project to keep things simple and efficient.
 
 ## Cloud Landscape Q4
 
+### NFL Fantasy Lineup
 
+This project sets the best lineup for each week of fantasy football. It stores data based on players' performance, checks free agency options, and gives trade suggestions.
+
+Pipeline:
+AWS Lambda, Supabase relational DB, GCP Vertex AI
+
+I think a benefit in using one provider is having all of your project housed under one roof. There is one place to troubleshoot any issues, and one bill to pay. The downside to this is you may end up using a tool that isn't the best fit for your project simply because it is available from the same service. 
