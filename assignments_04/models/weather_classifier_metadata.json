@@ -1,0 +1,21 @@
+{
+  "python_version": "3.12.8 (main, Dec  3 2024, 18:42:41) [Clang 15.0.0 (clang-1500.1.0.2.5)]",
+  "sklearn_version": "1.9.0",
+  "features": [
+    "temperature_2m_max",
+    "temperature_2m_min",
+    "precipitation_sum",
+    "wind_speed_10m_max"
+  ],
+  "best_params": {
+    "clf__C": 10.0
+  },
+  "test_auc": 0.9087,
+  "city": "Kingston, NY (lat 41.55, lon -73.59)",
+  "thresholds": {
+    "max-temp": -19,
+    "min-temp": 4,
+    "precipitation-max": 6,
+    "wind-max": 30
+  }
+}
