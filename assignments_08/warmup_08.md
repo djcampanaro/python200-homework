@@ -25,14 +25,14 @@ and performs all tasks in the background, leaving the user with just an interfac
 which to interact.
 Azure Virtual Machines            IaaS    Virtual Machines allows the user to set up their 
 own environment and build on top.
-AWS S3 (Simple Storage Service)   IaaS    S3 is a storage system that still requires the 
-user to set up and manage.
-GitHub Codespaces                 IaaS    Codespaces is also an environment on which the 
-user can build their programs/applications
+AWS S3 (Simple Storage Service)   PaaS    S3 is a storage system that still requires the 
+user to set up and manage, but the underlying code is run by AWS.
+GitHub Codespaces                 PaaS    Codespaces is also an environment on which the 
+user can build their programs/applications where the developer is responsible for the code
 Snowflake                         PaaS    Snowflake is a service that manages the 
 infrastructure, allowing the user to apply their own code.
-Supabase                          PaaS    Supabase is also a service that uses the cloud 
-in the background, allowing the user to interact with its interface.
+Supabase                          BaaS    Supabase is also a service that uses the cloud 
+in the background, allowing the user to interact with its interface, but also requires a certain amount of development.
 
 IaaS is infrastructure as a service. An example of this is AWS EC2. The developer is 
 responsible for setting up the os, building the environment, and handling security updates.
@@ -78,7 +78,7 @@ Supabase is more accessible as each student can create and sign in to their own 
 rather than needing to be invited.
 Supabase uses a relational database which is more transferable and fits in with the 
 structure of the project we will build.
-Supabase has stron pipeline coherence, making it easier to debug and inspect the pipeline 
+Supabase has strong pipeline coherence, making it easier to debug and inspect the pipeline 
 stages.
 
 When starting a new project, it would be a good idea to work out the scale and needs of 
