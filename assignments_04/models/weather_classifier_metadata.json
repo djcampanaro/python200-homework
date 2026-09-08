@@ -13,9 +13,9 @@
   "test_auc": 0.9087,
   "city": "Kingston, NY (lat 41.55, lon -73.59)",
   "thresholds": {
-    "max-temp": -19,
-    "min-temp": 4,
-    "precipitation-max": 6,
-    "wind-max": 30
+    "max-temp": "7-26\u00b0C",
+    "min-temp": ">= 4\u00b0C",
+    "precipitation-max": "< 6 mm",
+    "wind-max": "< 30 km/h"
   }
 }

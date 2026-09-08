@@ -123,9 +123,9 @@ plt.close()
 
 # The AUC tells of a high quality model, ranking above the 90th percentile. This is surprisingly 
 # better than I'd expected.
-# The precision and recall show that a false negative is more common. This means that the model more 
+# The precision and recall show that a false negative is more common. This means that the model is more 
 # accurate with catching negative days at the cost of mislabeling days that would be good for running. 
-# I would prefer to have more false positives than false negatives as one can always turn back in the 
+# I would prefer to have more false positives than false negatives as one can always turn back if the 
 # weather doesn't suit them. However, missing good days for running would be more disappointing.
 # I would set the threshold lower than 0.5 as I would rather catch as many good days for running even 
 # if that means more false positives.
@@ -142,10 +142,10 @@ metadata = {
     "test_auc":         round(test_auc, 4),
     "city":             "Kingston, NY (lat 41.55, lon -73.59)",
     "thresholds":       {
-                            "max-temp":          '7-26', #Celcius
-                            "min-temp":          4,
-                            "precipitation-max": 6,    #mm
-                            "wind-max":          30    #km pr hr 
+                            "max-temp":          "7-26°C",
+                            "min-temp":          ">= 4°C",
+                            "precipitation-max": "< 6 mm",
+                            "wind-max":          "< 30 km/h"
                         }
 }
 
