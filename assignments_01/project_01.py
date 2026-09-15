@@ -18,10 +18,9 @@ def load_multiple_years_of_data(numeric_columns: list, db_path: str):
     df_happiness = pd.DataFrame()
     num_columns = numeric_columns.copy()
     num_columns.append('ladder_score')
-    happiness_project_path = '../python-200/assignments/resources/happiness_project/world_happiness_20'
-    for year_abrev in range(15, 25):
-        year = f'20{year_abrev}'
-        data_path = f'{happiness_project_path}{year_abrev}.csv'
+    happiness_project_path = '../../python-200/assignments/resources/happiness_project/world_happiness_'
+    file_paths = [f'{happiness_project_path + str(year)}.csv' for year in range(2015, 2025)]
+    for data_path in file_paths:
         add_df = pd.read_csv(data_path, sep=';')
         add_df = add_df.sort_values(by='Ranking')
         column_names = list(add_df.columns)
@@ -38,6 +37,7 @@ def load_multiple_years_of_data(numeric_columns: list, db_path: str):
                 logger.info('alright')
         col_renames['Ladder score'] = 'happiness_score'
         add_df = add_df.rename(columns=col_renames)
+        year = data_path.split('s_')[1].split('.')[0]
         add_df['year'] = year
         df_happiness = pd.concat([df_happiness, add_df])
         df_happiness = df_happiness.reset_index(drop=True)
@@ -69,7 +69,7 @@ def visual_exploration(df, numeric_columns):
     plt.title('Happiness Histogram')
     plt.xlabel('Happiness Score')
     plt.ylabel('Frequency')
-    plt.savefig('assignments_01/outputs/happiness_histogram.png', dpi=300)
+    plt.savefig('outputs/happiness_histogram.png', dpi=300)
     logger.info('happiness histogram plot saved.')
     plt.clf()
 
@@ -78,7 +78,7 @@ def visual_exploration(df, numeric_columns):
     plt.suptitle("")
     plt.xlabel("Year")
     plt.ylabel("Happiness Score")
-    plt.savefig('assignments_01/outputs/happiness_by_year.png', dpi=300)
+    plt.savefig('outputs/happiness_by_year.png', dpi=300)
     logger.info('happiness by year plot saved.')
     plt.clf()
 
@@ -87,7 +87,7 @@ def visual_exploration(df, numeric_columns):
     plt.title('GDP vs. Happiness')
     plt.xlabel('GDP per Capita')
     plt.ylabel('Happiness Score')
-    plt.savefig('assignments_01/outputs/gdp_vs_happiness.png', dpi=300)
+    plt.savefig('outputs/gdp_vs_happiness.png', dpi=300)
     logger.info('gdp vs happiness plot saved.')
     plt.clf()
 
@@ -95,7 +95,7 @@ def visual_exploration(df, numeric_columns):
     happiness_correlation = heatmap.corr(numeric_only=True)
     sns.heatmap(happiness_correlation, annot=True, cmap='coolwarm', fmt='.2f')
     plt.title('Correlation Heatmap')
-    plt.savefig('assignments_01/outputs/correlation_heatmap.png', dpi=300)
+    plt.savefig('outputs/correlation_heatmap.png', dpi=300)
     logger.info('correlation heatmap plot saved.')
     plt.close()
 
@@ -170,7 +170,7 @@ def summary_report(df, pval_minimum):
 @flow
 def happiness_pipeline():
     numeric_columns = ['happiness_score','gdp_per_capita','social_support','healthy_life_expectancy','freedom_to_make_life_choices','generosity','perceptions_of_corruption']
-    db_path = 'assignments_01/outputs/merged_happiness.csv'
+    db_path = 'outputs/merged_happiness.csv'
     if not os.path.exists(db_path):
         df = load_multiple_years_of_data(numeric_columns, db_path)
     df = pd.read_csv(db_path)
