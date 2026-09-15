@@ -301,7 +301,7 @@ plt.title('Random Forest Matrix')
 plt.savefig('outputs/best_model_confusion_matrix.png')
 plt.clf()
 
-# The type of error does my best model makes more often is labeling spam emails as non-spam.
+# The type of error does my best model makes more often is mislabeling spam emails as non-spam.
 
 
 
