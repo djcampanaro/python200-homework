@@ -47,6 +47,6 @@ for i, (pred, prob) in enumerate(zip(preds, probs)):
 # FileNotFoundError. A helpful message would ask the user to esure the files were in the 
 # correct directory or run train_weather_classifier in order to create them.
 # In order to accommodate a daily weather check to classify the following day's weather, 
-# predict_weather would need a call into the forecast site's API or a scraper file. It 
-# would need to extract the same features as exist in the model in order to create the 
-# prediction for the next day.
+# predict_weather would need a call into the forecast site's API or a scraper file to get 
+# forcast data input instead of hard coded sample rows. It would need to extract the same 
+# features as exist in the model in order to create the prediction for the next day.
