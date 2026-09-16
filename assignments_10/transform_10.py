@@ -95,25 +95,29 @@ if len(to_classify) >= 1:
     for i, record in enumerate(enrichment_records):
         raw_row = next(r for r in to_classify if r['date'] == record['date'])
 
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {
-                    "role": "user",
-                    "content": make_user_message(
-                        raw_row,
-                        record["good_for_running"],
-                        record["confidence"],
-                    ),
-                },
-            ],
-            max_tokens=100,
-        )
+        try:
+            response = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {
+                        "role": "user",
+                        "content": make_user_message(
+                            raw_row,
+                            record["good_for_running"],
+                            record["confidence"],
+                        ),
+                    },
+                ],
+                max_tokens=100,
+            )
 
-        raw_summary = response.choices[0].message.content.strip()
-        summary = validate_summary(raw_summary) or "Recommendation unavailable."
-        record["llm_summary"] = summary
+            raw_summary = response.choices[0].message.content.strip()
+            summary = validate_summary(raw_summary) or "Recommendation unavailable."
+            record["llm_summary"] = summary
+        except Exception as e:
+            print(f'API error occurred while processing {record['date']}: {e}')
+            record["llm_summary"] = "Recommendation unavailable."
 
         if (i + 1) % 50 == 0:
             print(f"  Enriched {i + 1} / {len(enrichment_records)} records...")

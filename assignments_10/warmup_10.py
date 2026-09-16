@@ -48,7 +48,7 @@ load_dotenv()
 client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
 
 def call_with_retry(client, messages, max_retries=3):
-    while tries > max_retries:
+    while max_retries > 0:
         try:
             res = client.chat.completions.create(
                 model="gpt-4o-mini",
@@ -57,7 +57,7 @@ def call_with_retry(client, messages, max_retries=3):
             return res
         except Exception as e:
             print(e)
-            tries -= 1
+            max_retries -= 1
             time.sleep(2)
 
 # You would use this in a production pipeline when you are calling into a network that may fail intermittently. In this case you 
