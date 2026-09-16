@@ -1,6 +1,6 @@
 # --- Video ---
 
-#
+# https://youtu.be/wFasBWgsICo
 
 # --- Part 2: Project — The Double-Transform Pipeline ---
 
@@ -135,7 +135,7 @@ print(f"total number of rows: {len(total_rows.data)}")
 check = supabase.table("weather_enriched").select("*").limit(5).execute()
 for row in check.data:
     print(f"{row['date']} | good={row['good_for_running']} | conf={row['confidence']:.2f}")
-    print(f"  {row['llm_summary']}")
+    print(row['llm_summary'])
     print()
 
 # Count how many were classified as good
