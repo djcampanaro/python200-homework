@@ -116,7 +116,7 @@ if len(to_classify) >= 1:
             summary = validate_summary(raw_summary) or "Recommendation unavailable."
             record["llm_summary"] = summary
         except Exception as e:
-            print(f'API error occurred while processing {record['date']}: {e}')
+            print(f"API error occurred while processing {record['date']}: {e}")
             record["llm_summary"] = "Recommendation unavailable."
 
         if (i + 1) % 50 == 0:
