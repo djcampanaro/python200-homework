@@ -86,9 +86,8 @@ if len(to_classify) >= 1:
         text = text.strip()
         if not text:
             return None
-        # Reject if more than two sentences (simple heuristic)
         sentences = [s for s in text.split(".") if s.strip()]
-        if len(sentences) > 2:
+        if len(sentences) > 1:
             return None
         return text
 

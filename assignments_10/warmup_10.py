@@ -13,7 +13,7 @@
 # Converting a date string is best handled by deterministic code.
 # For classifying a job posting based on freeform text, I would use an LLM.
 # In predicting customer churn given 15 numeric features and a labeled training dataset I would employ a trained ML model.
-# To normalize inconsistent city names, I would utilize an LLM.
+# To normalize inconsistent city names, I would utilize deterministic code.
 # Summing a column of revenue figures works well with deterministic code.
 
 # ML/LLM Q3
@@ -58,6 +58,8 @@ def call_with_retry(client, messages, max_retries=3):
         except Exception as e:
             print(e)
             max_retries -= 1
+            if max_retries == 0:
+                return None
             time.sleep(2)
 
 # You would use this in a production pipeline when you are calling into a network that may fail intermittently. In this case you 
